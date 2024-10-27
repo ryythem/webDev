@@ -14,3 +14,13 @@ function sumOfSomething(a, b, callback) {
 let ans = sumOfSomething(1, 2, cube);
 console.log(ans);
 
+function myOwnSetTimeOut(duration) {
+  let p = new Promise(function (resolve) {
+    setTimeout(resolve, duration);
+  });
+  return p;
+}
+
+myOwnSetTimeOut(1000).then(function () {
+  console.log("log the first thing ");
+});
