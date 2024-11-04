@@ -1,0 +1,24 @@
+<html>
+  <head>
+    <script>
+      async function calculateInterest() {
+        const p = parseInt(document.getElementById("p").value);
+        const r = parseInt(document.getElementById("r").value);
+        const t = parseInt(document.getElementById("t").value);
+
+        const response = await fetch(
+          "http://localhost:3000/si?p=" + p + "&r=" + r + "&t=" + t
+        );
+        const ans = await response.text();
+        document.getElementById("interest").innerHTML = ans;
+      }
+    </script>
+  </head>
+  <body>
+    <input type="text" placeholder="principal" id="p" /><br /><br />
+    <input type="text" placeholder="rate" id="r" /><br /><br />
+    <input type="text" placeholder="time" id="t" /><br /><br />
+    <button onclick="calculateInterest()">Submit</button><br /><br />
+    <div id="interest"></div>
+  </body>
+</html>
