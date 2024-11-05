@@ -1,0 +1,46 @@
+<html>
+  <body>
+    <input type="text" placeholder="title" id="title" /><br /><br />
+    <input type="text" placeholder="description" id="description" /><br /><br />
+
+    <div id="container"></div>
+
+    <script>
+      function createChild(title, description, id) {
+        const childDiv = document.createElement("div");
+
+        const grandChildDiv1 = document.createElement("div");
+        grandChildDiv1.innerHTML = title;
+
+        const grandChildDiv2 = document.createElement("div");
+        grandChildDiv2.innerHTML = description;
+
+        const grandChildDiv3 = document.createElement("button");
+        grandChildDiv3.innerHTML = "Mark as done";
+        grandChildDiv3.setAttribute("onclick", `markAsDone(${id})`);
+        childDiv.appendChild(grandChildDiv1);
+        childDiv.appendChild(grandChildDiv2);
+        childDiv.appendChild(grandChildDiv3);
+        childDiv.setAttribute("id", id);
+        return childDiv;
+      }
+      function updateDomAccToState(state) {
+        const parent = document.getElementById("container");
+        parent.innerHTML = "";
+        for (let i = 0; i < state.length; i++) {
+          const child = createChild(
+            state[i].title,
+            state[i].description,
+            state[i].id
+          );
+          parent.appendChild(child);
+        }
+      }
+      window.setInterval(async function () {
+        const res = await fetch("http://localhost:3000/todos");
+        const ans = await res.json();
+        updateDomAccToState(ans.todos);
+      }, 5000);
+    </script>
+  </body>
+</html>
