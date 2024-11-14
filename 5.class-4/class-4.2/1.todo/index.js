@@ -51,4 +51,10 @@ app.get("/todos", (req, res) => {
   });
 });
 
+app.get("/todos/:id", (req, res) => {
+  const todoId = parseInt(req.params.id);
+  const todo = todos.find((todo) => todo.id === todoId);
+  res.json({ todos: todo });
+});
+
 app.listen(3000);
