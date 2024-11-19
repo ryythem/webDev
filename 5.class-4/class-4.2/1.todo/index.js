@@ -1,10 +1,7 @@
 const express = require("express");
 const cors = require("cors");
-
 const app = express();
-
 app.use(cors());
-app.use(express.json());
 
 const todos = [
   {
@@ -39,6 +36,13 @@ const todos = [
   },
 ];
 
+app.get("/todo", (req, res) => {
+  const todo = todos.find((t) => t.id == req.query.id);
+  res.json({
+    todo,
+  });
+});
+
 app.get("/todos", (req, res) => {
   const randomTodos = [];
   for (let i = 0; i < 5; i++) {
@@ -51,10 +55,36 @@ app.get("/todos", (req, res) => {
   });
 });
 
-app.get("/todos/:id", (req, res) => {
-  const todoId = parseInt(req.params.id);
-  const todo = todos.find((todo) => todo.id === todoId);
-  res.json({ todos: todo });
+app.get("/sum", (req, res) => {
+  const a = parseInt(req.query.a);
+  const b = parseInt(req.query.b);
+  const sum = a + b;
+  res.send(sum.toString());
 });
 
-app.listen(3000);
+app.get("/interest", (req, res) => {
+  const principal = parseInt(req.query.principal);
+  const rate = parseInt(req.query.rate);
+  const time = parseInt(req.query.time);
+  const interest = (principal * rate * time) / 100;
+  const total = principal + interest;
+  res.send({
+    total: total,
+    interest: interest,
+  });
+});
+
+function getRandomNumber(max) {
+  return Math.floor(Math.random() * max);
+}
+
+app.get("/notifications", (req, res) => {
+  res.json({
+    network: getRandomNumber(10),
+    jobs: getRandomNumber(10),
+    messaging: getRandomNumber(10),
+    notifications: getRandomNumber(10),
+  });
+});
+
+app.listen(8080);
