@@ -1,12 +1,21 @@
 import { useState } from "react";
+import { RevenueCard } from "./components/RevenueCard";
+import { SideBar } from "./components/SideBar";
 
 function App() {
   return (
     <>
-      <div className="grid grid-cols-1 md:grid-cols-3 ">
-        <div className="bg-red-500 ">hi</div>
-        <div className="bg-blue-500 ">hi</div>
-        <div className="bg-green-500 ">hi</div>
+      <div className="grid grid-cols-4">
+        <div>
+          <SideBar />
+        </div>
+        <div>
+          <RevenueCard
+            title={"Amount pending"}
+            amount={"92,312.20"}
+            orderCount={13}
+          />
+        </div>
       </div>
     </>
   );
