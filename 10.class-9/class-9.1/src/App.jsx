@@ -1,48 +1,17 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-
-function useTodos(n) {
-  const [todos, setTodos] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  async function getData() {
-    const res = await axios.get("http://localhost:8080/todos");
-    setTodos(res.data.todos);
-    setLoading(false);
-  }
-
-  useEffect(() => {
-    getData();
-    const value = setInterval(() => {
-      getData();
-    }, n * 1000);
-    return () => {
-      clearInterval(value);
-    };
-  }, [n]);
-
-  return { todos, loading };
-}
+import { useIsOnline } from "./useIsOnline";
+import { useMousePointer } from "./useMousePointer";
+import { useDebounce } from "./useDebounce";
 
 function App() {
-  const { todos, loading } = useTodos(5);
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+  const [value, setValue] = useState("");
+  const debouceValue = useDebounce(value, 500);
   return (
     <>
-      {todos.map((todo) => {
-        return <Track todo={todo} />;
-      })}
-    </>
-  );
-}
-
-function Track({ todo }) {
-  return (
-    <>
-      <div>{todo.title}</div> <br />
-      <div>{todo.description}</div>
+      Debounced value is {debouceValue}
+      <br />
+      <input type="text" onChange={(e) => setValue(e.target.value)} />
     </>
   );
 }
