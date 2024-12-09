@@ -1,0 +1,10 @@
+-> Simple docker commands
+1. docker run <image name> - to run an image
+2. docker ps - to see all running containers
+3. docker kill <container id> - to stop a container
+
+-> To run mongo locally
+    Simple command : docker run mongo
+    To map it to laptop's port : docker run -p <port>:27017 mongo
+    To run in detached mode : docker run -d -p <port>:27017 mongo
+
