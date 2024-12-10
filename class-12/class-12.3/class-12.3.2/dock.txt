@@ -8,3 +8,9 @@
     To map it to laptop's port : docker run -p <port>:27017 mongo
     To run in detached mode : docker run -d -p <port>:27017 mongo
 
+-> To connect to psql
+    docker exec -it <id> /bin/bash
+    psql -h <hostname> -d <dbName> -U <userName>
+        -h: host name
+        -d: database name
+        -U: user name
