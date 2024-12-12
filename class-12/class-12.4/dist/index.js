@@ -16,7 +16,6 @@ const dotenv_1 = __importDefault(require("dotenv"));
 const pg_1 = require("pg");
 dotenv_1.default.config();
 const url = process.env.post_url;
-// write a function to create a users table in your database.
 const client = new pg_1.Client({
     connectionString: url,
 });
@@ -34,17 +33,55 @@ const client = new pg_1.Client({
 //   console.log(result);
 // }
 // createUsersTable();
-function insertUserdata(username, password, email) {
+// async function insertUserdata(
+//   username: string,
+//   password: string,
+//   email: string
+// ) {
+//   await client.connect();
+//   const result = await client.query(`
+//         INSERT INTO users2(username,password,email)
+//         VALUES ($1,$2,$3)
+//     `,[username, password, email]);
+//   console.log(result);
+// }
+// insertUserdata("haharythem", "haharythem", "haharythem@email.com");
+function insertUserAndAddress(username, password, email, city, country, street, pincode) {
     return __awaiter(this, void 0, void 0, function* () {
-        yield client.connect();
-        const result = yield client.query(`
-        INSERT INTO users2(username,password,email)
-        VALUES ('${username}','${password}','${email}')
-    `);
-        console.log(result);
+        try {
+            yield client.connect();
+            yield client.query("BEGIN");
+            const insertUserText = `
+    INSERT into users2 (username, password, email)
+    values ($1,$2,$3)
+    returning id;`;
+            const userRec = yield client.query(insertUserText, [
+                username,
+                password,
+                email,
+            ]);
+            const userId = userRec.rows[0].id;
+            const insertAddressText = `
+    INSERT into addresses (user_id,city,country,street,pincode)
+    values ($1,$2,$3,$4,$5);`;
+            yield client.query(insertAddressText, [
+                userId,
+                city,
+                country,
+                street,
+                pincode,
+            ]);
+            yield client.query("COMMIT");
+            console.log("User and address added successfully");
+        }
+        catch (err) {
+            yield client.query("ROLLBACK");
+            console.log("Error during transaction");
+            throw err;
+        }
+        finally {
+            yield client.end();
+        }
     });
 }
-insertUserdata("rythem", "haharythem", "rythem@email.com");
-`
-
-`;
+insertUserAndAddress('john', 'john@example.com', 'securepassword123', 'Kolkalta', 'India', '123 Broadway St', '10001');
