@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 function App() {
   const [messages, setMessages] = useState(["hello", "hi there"]);
   const [message, setMessage] = useState("");
+  //@ts-ignore
   const wsRef = useRef();
   useEffect(() => {
     const ws = new WebSocket("http://localhost:8000");
@@ -47,6 +48,7 @@ function App() {
         />
         <button
           onClick={() => {
+            //@ts-ignore
             wsRef.current.send(
               JSON.stringify({
                 type: "chat",
